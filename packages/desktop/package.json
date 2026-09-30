@@ -22,7 +22,7 @@
     "build": "pnpm prepare:runtime-assets && pnpm run build:no-runtime-assets",
     "bundle": "node scripts/bundle.mjs",
     "audit:bundle-size": "node scripts/audit-bundle-size.mjs",
-    "postinstall": "node scripts/node-pty-rebuild.mjs",
+    "postinstall": "echo skipped-node-pty-rebuild",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix"
   },
