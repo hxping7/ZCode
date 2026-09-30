@@ -7,8 +7,14 @@ export function useZCodeAgentService(
   preferredRemoteSessionId?: string | null,
   workspaceIdentity?: string | null,
 ): IZCodeAgentService {
-  const services = workspacePath
-    ? useWorkspaceServices(workspacePath, preferredRemoteSessionId, workspaceIdentity)
-    : useServices();
-  return services.zcodeAgentService;
+  // Rules of Hooks：不能按 workspacePath 条件调用 hook（同 useZCodeSessionService 的修复），
+  // 否则 workspacePath 两次渲染间变化时 hook 链错位，导致 useSyncExternalStore 内部
+  // 读取到其他 hook 的 memoizedState 而崩溃。
+  const workspaceServices = useWorkspaceServices(
+    workspacePath ?? null,
+    preferredRemoteSessionId,
+    workspaceIdentity,
+  );
+  const contextServices = useServices();
+  return (workspacePath ? workspaceServices : contextServices).zcodeAgentService;
 }
